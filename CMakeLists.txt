@@ -8,16 +8,17 @@ set(ONNXRUNTIME_ROOTDIR "/usr/lib/onnxruntime")
 
 find_package(OpenCL REQUIRED)
 
-
 include_directories("./include/")
 
 set(SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/src/)
 
 set(SOURCE
    ${SOURCE}
-   ${SOURCE_DIR}/gpu/OpenCL.cpp
+   ${SOURCE_DIR}/Gpu/OpenCL.cpp
    ${SOURCE_DIR}/Inference/Onnx.cpp
    ${SOURCE_DIR}/Utils/string_ops.cpp
+   ${SOURCE_DIR}/Utils/file_ops.cpp
+
 )
 
 add_executable(

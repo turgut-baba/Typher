@@ -14,24 +14,26 @@
 #include <vector>
 #include <iostream>
 
-template<typename DataType>
-class Engine{
-public:
-    Engine() = default;
+namespace MLEngine{
+    template<typename DataType>
+    class Engine{
+    public:
+        Engine() = default;
 
-    virtual void Run() = 0;
+        virtual void Run() = 0;
 
-    virtual void fill(std::vector<DataType>& input) = 0;
+        virtual void fill(std::vector<DataType>& input) = 0;
 
-    virtual std::vector<DataType> get_output() = 0;
+        virtual std::vector<DataType> get_output() = 0;
 
-    virtual void set_gpu(bool gpu_switch) = 0;
+        virtual void set_gpu(bool gpu_switch) = 0;
 
-    virtual ~Engine() = default;
-protected:
-    bool filled = false;
-    std::string model_path;
-    std::vector<DataType> output;
+        virtual ~Engine() = default;
+    protected:
+        bool filled = false;
+        std::string model_path;
+        std::vector<DataType> output;
+    };
 };
 
 #endif

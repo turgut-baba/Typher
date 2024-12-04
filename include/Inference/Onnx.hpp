@@ -19,30 +19,33 @@
 #include <vector>
 #include <onnxruntime_cxx_api.h>
 
-class Onnx: public Engine<float>
+namespace MLEngine
 {
-public:
-    explicit Onnx();
+    class Onnx: public Engine<float>
+    {
+    public:
+        explicit Onnx(std::string& instance_name);
 
-    void Run() override;
+        void Run() override;
 
-    void fill(std::vector<float>& input) override;
+        void fill(std::vector<float>& input) override;
 
-    std::vector<float> get_output() override;
+        std::vector<float> get_output() override;
 
-    void set_gpu(bool gpu_switch) override;
+        void set_gpu(bool gpu_switch) override;
 
-    virtual ~Onnx() = default;
-private:
-    std::unique_ptr<Ort::Session> session;
+        virtual ~Onnx() = default;
+    private:
+        std::unique_ptr<Ort::Session> session;
 
-    Ort::AllocatorWithDefaultOptions allocator;
+        Ort::AllocatorWithDefaultOptions allocator;
 
-    const char* inputName;
-    std::vector<int64_t> inputDims;
+        const char* inputName;
+        std::vector<int64_t> inputDims;
 
-    const char* outputName;
-    std::vector<int64_t> outputDims;
+        const char* outputName;
+        std::vector<int64_t> outputDims;
+    };
 };
 
 #endif

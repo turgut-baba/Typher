@@ -1,5 +1,3 @@
-#include "kernel_utils.h"
-
 __kernel void square(
    __global float* input,
    __global float* output,

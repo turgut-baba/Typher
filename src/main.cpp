@@ -10,7 +10,7 @@
  */
 
 #include "Inference/Onnx.hpp"
-#include "gpu/OpenCL.hpp"
+#include "Gpu/OpenCL.hpp"
 
 int main(int argc, char* argv)
 {
@@ -18,7 +18,8 @@ int main(int argc, char* argv)
     //engine.fill();
     engine.Run(); */
 
-    OpenCL gpu = OpenCL();
+    MLEngine::OpenCL gpu = MLEngine::OpenCL();
+    gpu.load_kernel_from_file("./kernels/softmax.cl");
     gpu.run_kernel();
 }
 
