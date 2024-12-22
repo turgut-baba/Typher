@@ -1,4 +1,4 @@
-project(MLENGINE)
+project(Typher)
 
 cmake_minimum_required(VERSION 3.0)
 
@@ -22,18 +22,18 @@ set(SOURCE
 )
 
 add_executable(
-    MLENGINE src/main.cpp ${SOURCE}
+    Typher src/main.cpp ${SOURCE}
 )
 
 target_include_directories(
-    MLENGINE PRIVATE "${ONNXRUNTIME_ROOTDIR}/include"
+    Typher PRIVATE "${ONNXRUNTIME_ROOTDIR}/include"
                     "${ONNXRUNTIME_ROOTDIR}/include/onnxruntime"
                     "${ONNXRUNTIME_ROOTDIR}/include/onnxruntime/core/session"
 )
 
-target_link_directories(MLENGINE PRIVATE "${ONNXRUNTIME_ROOTDIR}/build/Linux/RelWithDebInfo/")
+target_link_directories(Typher PRIVATE "${ONNXRUNTIME_ROOTDIR}/build/Linux/RelWithDebInfo/")
 
-target_link_libraries(MLENGINE onnxruntime OpenCL::OpenCL)
+target_link_libraries(Typher onnxruntime OpenCL::OpenCL)
 
 set_target_properties(${PROJECT_NAME} PROPERTIES C_STANDARD 11
                                                  C_STANDARD_REQUIRED ON

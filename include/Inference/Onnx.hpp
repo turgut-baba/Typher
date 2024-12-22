@@ -19,7 +19,7 @@
 #include <vector>
 #include <onnxruntime_cxx_api.h>
 
-namespace MLEngine
+namespace Typher
 {
     class Onnx: public Engine<float>
     {
@@ -29,6 +29,8 @@ namespace MLEngine
         void Run() override;
 
         void fill(std::vector<float>& input) override;
+
+        void load_model(std::string model_path) override;
 
         std::vector<float> get_output() override;
 

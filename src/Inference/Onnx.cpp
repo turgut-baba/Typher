@@ -11,19 +11,17 @@
 
 #include "Inference/Onnx.hpp"
 
-namespace MLEngine{
+namespace Typher{
     template <typename T>
     T vectorProduct(const std::vector<T>& v)
     {
         return accumulate(v.begin(), v.end(), 1, std::multiplies<T>());
     }
 
-    Onnx::Onnx(std::string& instance_name)
+    Onnx::Onnx(std::string& model_path) // "image-classification-inference"
     {
-        std::string instanceName{"image-classification-inference"};
-
         Ort::Env env(OrtLoggingLevel::ORT_LOGGING_LEVEL_WARNING,
-                    instanceName.c_str());
+                    "Typher-Instance");
 
         Ort::SessionOptions sessionOptions;
         sessionOptions.SetIntraOpNumThreads(1);
@@ -31,18 +29,20 @@ namespace MLEngine{
         sessionOptions.SetGraphOptimizationLevel(
             GraphOptimizationLevel::ORT_DISABLE_ALL);
 
-        std::string modelFilepath = "./models/adv_inception_v3_Opset16.onnx";
-
-        if(!checkModelExtension(modelFilepath)) 
+        if(!checkModelExtension(model_path)) 
         {
             throw std::runtime_error("[ ERROR ] The ModelFilepath is not correct. Make sure you are setting the path to an onnx model file (.onnx)");
         }
 
-        //Creation: The Ort::Session is created here
-        session = std::make_unique<Ort::Session>(env, modelFilepath.c_str(), sessionOptions);
+        session = std::make_unique<Ort::Session>(env, model_path.c_str(), sessionOptions);
 
         size_t numInputNodes = session->GetInputCount();
         size_t numOutputNodes = session->GetOutputCount();
+    }
+
+    void Onnx::load_model(std::string model_path)
+    {
+        // TODO: research and propperly implement this. 
     }
 
     void Onnx::fill(std::vector<float>& input)

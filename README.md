@@ -1,6 +1,6 @@
-# Create AI and ML applications easily with MLEngine! 
+# Create AI and ML applications easily with Typher! 
 
-**MLEngine** is a free open-source multi-platform C++ framework that allows anyone to easily build an application without worrying about any coding details and builds, just train your model, specify your needs and build your ML software on top **MLEngine**!
+**Typher** is a free open-source multi-platform C++ framework that allows anyone to easily build an application without worrying about any coding details and builds, just train your model, specify your needs and build your ML software on top **Typher**!
 
 # Get started
 To get started, you can either watch an informative video or read our documentation.

@@ -1,12 +1,8 @@
 #include "Gpu/OpenCL.hpp"
 
-////////////////////////////////////////////////////////////////////////////////
-
-// Use a static data size for simplicity
-//
 #define DATA_SIZE (1024)
 
-namespace MLEngine{
+namespace Typher{
 
     OpenCL::OpenCL()
     {
@@ -21,6 +17,33 @@ namespace MLEngine{
             std::cout << numPlatforms << " platform(s) found\n" << std::endl;
         else
             std::cout << "clGetPlatformIDs(" << CL_err <<  ")\n" << std::endl;
+
+        // BELOW WAS ORIGINALLY IN RUN_KERNEL.
+
+        // Connect to a compute device
+        //
+        int err = clGetDeviceIDs(NULL, CL_DEVICE_TYPE_ALL, 1, &device_id, NULL);
+
+        if (err != CL_SUCCESS)
+        {
+            printf("Error: Failed to create a device group! %d\n", err);
+        }
+    
+        // Create a compute context 
+        //
+        context = clCreateContext(0, 1, &device_id, NULL, NULL, &err);
+        if (!context)
+        {
+            printf("Error: Failed to create a compute context!\n");
+        }
+
+        // Create a command commands
+        //
+        commands = clCreateCommandQueue(context, device_id, 0, &err);
+        if (!commands)
+        {
+            printf("Error: Failed to create a command commands!\n");
+        }
     }
 
     std::string OpenCL::get_device_info()
@@ -37,6 +60,7 @@ namespace MLEngine{
         {
             delete[] this->current_kernel;
         }
+        
         size_t dotPosition = file_path.find_last_of('.');
 
         if(dotPosition == std::string::npos || file_path.substr(dotPosition) != ".cl")
@@ -44,6 +68,7 @@ namespace MLEngine{
             // TODO: log error
         }else{
             std::string str_file = MLUtils::read_file(file_path);
+
             const char* as_c_str = str_file.c_str();
 
             this->current_kernel = new char[strlen(as_c_str) + 1];
@@ -56,45 +81,13 @@ namespace MLEngine{
     {
         int err;                            // error code returned from api calls
         
-        float data[DATA_SIZE];              // original data set given to device
         float results[DATA_SIZE];           // results returned from device
+
         unsigned int correct;               // number of correct results returned
         
         // Fill our data set with random float values
         //
-        int i = 0;
         unsigned int count = DATA_SIZE;
-        for(i = 0; i < count; i++)
-            data[i] = rand() / (float)RAND_MAX;
-        
-        // Connect to a compute device
-        //
-        int gpu = 1;
-        err = clGetDeviceIDs(NULL, CL_DEVICE_TYPE_ALL, 1, &device_id, NULL);
-
-        if (err != CL_SUCCESS)
-        {
-            printf("Error: Failed to create a device group! %d\n", err);
-            return EXIT_FAILURE;
-        }
-    
-        // Create a compute context 
-        //
-        context = clCreateContext(0, 1, &device_id, NULL, NULL, &err);
-        if (!context)
-        {
-            printf("Error: Failed to create a compute context!\n");
-            return EXIT_FAILURE;
-        }
-
-        // Create a command commands
-        //
-        commands = clCreateCommandQueue(context, device_id, 0, &err);
-        if (!commands)
-        {
-            printf("Error: Failed to create a command commands!\n");
-            return EXIT_FAILURE;
-        }
 
         // Create the compute program from the source buffer
         //
@@ -191,19 +184,6 @@ namespace MLEngine{
             printf("Error: Failed to read output array! %d\n", err);
             exit(1);
         }
-        
-        // Validate our results
-        //
-        correct = 0;
-        for(i = 0; i < count; i++)
-        {
-            if(results[i] == data[i] * data[i])
-                correct++;
-        }
-        
-        // Print a brief summary detailing the results
-        //
-        printf("Computed '%d/%d' correct values!\n", correct, count);
 
         return 0;
     }

@@ -14,13 +14,15 @@
 #include <vector>
 #include <iostream>
 
-namespace MLEngine{
+namespace Typher{
     template<typename DataType>
     class Engine{
     public:
         Engine() = default;
 
         virtual void Run() = 0;
+
+        virtual void load_model(std::string model_path) = 0;
 
         virtual void fill(std::vector<DataType>& input) = 0;
 
