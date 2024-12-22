@@ -18,7 +18,7 @@ set(SOURCE
    ${SOURCE_DIR}/Inference/Onnx.cpp
    ${SOURCE_DIR}/Utils/string_ops.cpp
    ${SOURCE_DIR}/Utils/file_ops.cpp
-
+   ${SOURCE_DIR}/Utils/Logger/logger.cpp
 )
 
 add_executable(
